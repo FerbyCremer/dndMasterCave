@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane prefHeight="700.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mapEditController">
+   <bottom>
+      <ToolBar id="mapTools" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+            <Button id="noteBtn" fx:id="NoteBtn" mnemonicParsing="false" text="Note" />
+            <Button id="text" fx:id="TextBtn" mnemonicParsing="false" text="Text" />
+            <ChoiceBox id="FontPicker" prefWidth="150.0" />
+          <Button id="bold" mnemonicParsing="false" text="B">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font>
+            </Button>
+            <Button id="underline" mnemonicParsing="false" text="U">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font>
+            </Button>
+            <Button id="Italic" mnemonicParsing="false" text="I">
+               <font>
+                  <Font name="Georgia Italic" size="13.0" />
+               </font>
+            </Button>
+            <ColorPicker id="colorPicker" fx:id="paint" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="1.0" />
+            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
+            <TextField prefHeight="27.0" prefWidth="81.0" promptText="Grid Size" />
+            <TextField prefHeight="27.0" prefWidth="89.0" promptText="Map Width" />
+            <TextField prefHeight="27.0" prefWidth="100.0" promptText="Map Height" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+            <Button mnemonicParsing="false" text="Save" />
+            <Button mnemonicParsing="false" text="Delete">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
+        </items>
+      </ToolBar>
+   </bottom>
+   <center>
+      <ScrollPane id="mapScroll" pannable="true" prefViewportHeight="660.0" prefViewportWidth="1020.0">
+         <content>
+            <Pane prefHeight="654.0" prefWidth="1017.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Canvas height="650.0" width="1014.0" />
+               </children>
+            </Pane>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

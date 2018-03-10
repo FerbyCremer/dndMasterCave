@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<TitledPane text="D'nD Master Cave Creations" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mainEditController">
+   <content>
+      <BorderPane maxHeight="720.0" maxWidth="1080.0" prefHeight="620.0" prefWidth="1040.0">
+         <top>
+            <MenuBar BorderPane.alignment="CENTER">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="New" />
+                        <MenuItem mnemonicParsing="false" text="Open" />
+                        <MenuItem mnemonicParsing="false" text="Save" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Editor">
+                  <items>
+                    <MenuItem fx:id="mapScene" mnemonicParsing="false" text="Map Editor" onAction="#loadMapEditor" />
+                        <MenuItem fx:id="npcScene" mnemonicParsing="false" text="NPC/Monster Editor" onAction="#loadNPCeditor" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Aesthetics">
+                  <items>
+                        <RadioMenuItem fx:id="launch" mnemonicParsing="false" text="Launch Campaign" onAction="#launchCampaign"/>
+                    <MenuItem fx:id="ThemeEdit" mnemonicParsing="false" text="Edit CSS" onAction="#EditTheme" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </top>
+         <center>
+            <ScrollPane prefViewportHeight="552.0" prefViewportWidth="916.0">
+               <content>
+                  <SubScene fx:id="mainSpace" id="WorkSpace" height="552.0" width="916.0" BorderPane.alignment="CENTER">
+                    <root>
+                      <Region />
+                    </root>
+                  </SubScene>
+               </content>
+            </ScrollPane>
+         </center>
+         <left>
+            <TreeView id="ResourceLib" fx:id="ResourceLibrary" fixedCellSize="1.0" prefHeight="200.0" prefWidth="200.0" showRoot="false" BorderPane.alignment="CENTER" />
+         </left>
+      </BorderPane>
+   </content>
+   <font>
+      <Font name="Assassin$" size="18.0" />
+   </font>
+</TitledPane>
