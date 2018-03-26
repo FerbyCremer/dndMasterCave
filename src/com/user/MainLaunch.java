@@ -15,13 +15,14 @@ public class MainLaunch extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
+//        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/LoginView.fxml"));
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("views/MainEditUI.fxml"));
         stage.initStyle(StageStyle.DECORATED);
         stage.setTitle("D&D Master Cave");
         //stage.getIcons().add(new Image(getClass().getClassLoader().getResource("icons/logo.png").toString()));
-        Scene mainScene = new Scene(root, 350, 420);
+        Scene mainScene = new Scene(root);
         mainScene.setRoot(root);
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.setScene(mainScene);
         stage.show();
         stage.setOnCloseRequest( e -> Platform.exit());

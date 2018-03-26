@@ -1,63 +1,89 @@
 package com.assets;
 
+import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
-public class mapObj extends Canvas {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+import static javafx.scene.paint.Color.GREEN;
+
+public class mapObj extends Canvas{
     public double scale;
 
-    public int width;
-    public int height;
+    public double width;
+    public double height;
 
     protected int hLineCount;
     protected int vLineCount;
 
-    public Canvas canvas;
-
     public GraphicsContext gc;
-    private GraphicsContext grid;
+    public GraphicsContext grid;
 
-    public mapObj(){
-        scale = 30;
-        width = 720;
-        height = 500;
+    private void draw() {
+        //gc = getGraphicsContext2D();
+        //gc.clearRect(0, 0, width, height);
 
-        hLineCount = (int) Math.floor((height + 1) / scale);
-        vLineCount = (int) Math.floor((width + 1) / scale);
-        canvas = new Canvas((double)width, (double)height);
-
-        gc = canvas.getGraphicsContext2D();
-        grid = canvas.getGraphicsContext2D();
-
-        grid.clearRect(0,0, width, height);
+        grid  = getGraphicsContext2D();
+        grid.setFill(Color.WHITE);
+        grid.fillRect(0,0, width, height);
+        grid.setLineWidth(1);
+        grid.setStroke(Color.GRAY);
 
         for (int i = 0; i < hLineCount; i++) {
             grid.strokeLine(0, snap((i + 1) * this.scale), width, snap((i + 1) * this.scale));
+            grid.stroke();
         }
 
         for (int i = 0; i < vLineCount; i++) {
             grid.strokeLine(snap((i + 1) * this.scale), 0, snap((i + 1) * this.scale), height);
+            grid.stroke();
         }
     }
 
-    public void resizeMap( String w, String h, String s){
+    @Override
+    public boolean isResizable() {
+        return true;
+    }
+
+    public mapObj() {
+        super();
+        scale = 30;
+        width = 1014;
+        height = 650;
+        hLineCount = (int) Math.floor((height + 1) / scale);
+        vLineCount = (int) Math.floor((width + 1) / scale);
+    }
+
+    public void init(){
+        //gc = getGraphicsContext2D();
+        grid = getGraphicsContext2D();
+
+        grid.setFill(GREEN);
+        grid.fillRect(0,0, width, height);
+        grid.setLineWidth(4);
+        grid.setStroke(Color.RED);
+
+        for (int i = 0; i < this.hLineCount; i++) {
+            grid.strokeLine(0, snap((i + 1) * this.scale), this.width, snap((i + 1) * this.scale));
+        }
+
+        for (int i = 0; i < this.vLineCount; i++) {
+            grid.strokeLine(snap((i + 1) * this.scale), 0, snap((i + 1) * this.scale), this.height);
+        }
+
+        // Redraw canvas when size changes.
+        widthProperty().addListener(evt -> draw());
+        heightProperty().addListener(evt -> draw());
+    }
+    public void resize( String w, String h, String s){
         scale = Double.parseDouble(s);
-        width = Integer.parseInt(w);
-        height = Integer.parseInt(h);
+        width = Double.parseDouble(w);
+        height = Double.parseDouble(h);
 
-        canvas.resize((double)width, (double)height);
-
-        //grid  = this.getGraphicsContext2D();
-        grid.clearRect(0,0, width, height);
-        grid.setLineWidth(1);
-
-        for (int i = 0; i < hLineCount; i++) {
-            grid.strokeLine(0, snap((i + 1) * this.scale), width, snap((i + 1) * this.scale));
-        }
-
-        for (int i = 0; i < vLineCount; i++) {
-            grid.strokeLine(snap((i + 1) * this.scale), 0, snap((i + 1) * this.scale), height);
-        }
+        this.draw();
     }
 
     private double snap(double y) {

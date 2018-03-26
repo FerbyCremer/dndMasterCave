@@ -1,58 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.StackPane?>
 
-
-<TitledPane text="D'nD Master Cave Creations" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mainEditController">
-   <content>
-      <BorderPane maxHeight="720.0" maxWidth="1080.0" prefHeight="620.0" prefWidth="1040.0">
-         <top>
-            <MenuBar BorderPane.alignment="CENTER">
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="New" />
-                        <MenuItem mnemonicParsing="false" text="Open" />
-                        <MenuItem mnemonicParsing="false" text="Save" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Editor">
-                  <items>
-                    <MenuItem fx:id="mapScene" mnemonicParsing="false" text="Map Editor" onAction="#loadMapEditor" />
-                        <MenuItem fx:id="npcScene" mnemonicParsing="false" text="NPC/Monster Editor" onAction="#loadNPCeditor" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Aesthetics">
-                  <items>
-                        <RadioMenuItem fx:id="launch" mnemonicParsing="false" text="Launch Campaign" onAction="#launchCampaign"/>
-                    <MenuItem fx:id="ThemeEdit" mnemonicParsing="false" text="Edit CSS" onAction="#EditTheme" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-         </top>
-         <center>
-            <ScrollPane prefViewportHeight="552.0" prefViewportWidth="916.0">
-               <content>
-                  <SubScene fx:id="mainSpace" id="WorkSpace" height="552.0" width="916.0" BorderPane.alignment="CENTER">
-                    <root>
-                      <Region />
-                    </root>
-                  </SubScene>
-               </content>
-            </ScrollPane>
-         </center>
-         <left>
-            <TreeView id="ResourceLib" fx:id="ResourceLibrary" fixedCellSize="1.0" prefHeight="200.0" prefWidth="200.0" showRoot="false" BorderPane.alignment="CENTER" />
-         </left>
-      </BorderPane>
-   </content>
-   <font>
-      <Font name="Assassin$" size="18.0" />
-   </font>
-</TitledPane>
+<BorderPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mainEditController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="New" />
+                  <MenuItem mnemonicParsing="false" text="Open" />
+                  <MenuItem mnemonicParsing="false" text="Save" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Editor">
+            <items>
+              <MenuItem fx:id="mapScene" mnemonicParsing="false" onAction="#loadMapEditor" text="Map Editor" />
+                  <MenuItem fx:id="npcScene" mnemonicParsing="false" onAction="#loadNPCeditor" text="NPC/Monster Editor" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Aesthetics">
+            <items>
+                  <RadioMenuItem fx:id="launch" mnemonicParsing="false" onAction="#launchCampaign" text="Launch Campaign" />
+              <MenuItem fx:id="ThemeEdit" mnemonicParsing="false" onAction="#EditTheme" text="Edit CSS" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <center>
+       <StackPane id="mapScroll" BorderPane.alignment="CENTER">
+          <children>
+              <Canvas id="drawingBoard" fx:id="board" cache="true" height="650.0" width="1014.0" />
+          </children>
+       </StackPane>
+   </center>
+   <left>
+      <TreeView id="ResourceLib" fx:id="ResourceLibrary" editable="true" nodeOrientation="LEFT_TO_RIGHT" showRoot="false" BorderPane.alignment="CENTER" />
+   </left>
+    <bottom>
+        <ToolBar id="mapTools" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <items>
+            <Button fx:id="live" mnemonicParsing="false" text="Launch" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
+                <Button id="noteBtn" fx:id="NoteBtn" mnemonicParsing="false" text="Note">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></Button>
+                <Button id="text" fx:id="TextBtn" mnemonicParsing="false" text="Text" />
+                <ChoiceBox id="FontPicker" prefWidth="150.0" />
+                <Button id="bold" mnemonicParsing="false" text="B">
+                    <font>
+                        <Font name="Georgia Bold" size="13.0" />
+                    </font>
+                </Button>
+                <Button id="underline" mnemonicParsing="false" text="U">
+                    <font>
+                        <Font name="Georgia" size="13.0" />
+                    </font>
+                </Button>
+                <Button id="Italic" mnemonicParsing="false" text="I">
+                    <font>
+                        <Font name="Georgia Italic" size="13.0" />
+                    </font>
+                </Button>
+                <ColorPicker id="colorPicker" fx:id="paint" />
+                <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="1.0" />
+                <Button fx:id="LineBtn" mnemonicParsing="false" text="Lines" />
+                <Button fx:id="imgBtn" mnemonicParsing="false" text="Images" />
+                <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
+                <TextField prefHeight="27.0" prefWidth="81.0" promptText="Grid Size" />
+                <TextField prefHeight="27.0" prefWidth="89.0" promptText="Map Width" />
+                <TextField prefHeight="27.0" prefWidth="100.0" promptText="Map Height" />
+                <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+                <Button mnemonicParsing="false" text="Save" />
+                <Button mnemonicParsing="false" text="Delete">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </Button>
+            </items>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+        </ToolBar>
+    </bottom>
+</BorderPane>

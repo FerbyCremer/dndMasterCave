@@ -13,9 +13,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class mapEditController implements Initializable {
-    protected mapObj world = new mapObj();
+    //protected mapObj world = new mapObj();
     @FXML
-    Canvas mapCanvas = world.canvas;
+    public Canvas board;
     @FXML
     TextField scaleFactor;
     @FXML TextField yVal;
@@ -27,11 +27,11 @@ public class mapEditController implements Initializable {
     @FXML
     ColorPicker paint;
 
-    private int Mode = 2;
+    private int Mode = 0;
     private static mapEditController instance;
     public static mapEditController getInstance() { return instance; }
 
-    public mapEditController(){ instance = this; }
+   public mapEditController(){ instance = this; }
 
     @FXML public void setBold(){
 
@@ -56,7 +56,7 @@ public class mapEditController implements Initializable {
             @Override
             public void handle(KeyEvent event) {
                 if (event.getCode() == KeyCode.ENTER)
-                    world.scale = Double.parseDouble(scaleFactor.getText());
+                    ((mapObj)board).scale = Double.parseDouble(scaleFactor.getText());
             }
         });
         //repaint?
@@ -81,6 +81,7 @@ public class mapEditController implements Initializable {
 
 
     @Override public void initialize(URL location, ResourceBundle resources){
+        board  = new mapObj();
         TextBtn.setOnMouseClicked(event -> {
             this.Mode = 0;
         });
@@ -90,12 +91,12 @@ public class mapEditController implements Initializable {
         LineBtn.setOnMouseClicked(event -> {
             this.Mode = 2;
         });
-        world.gc.setFill(paint.getValue());
-        world.gc.setStroke(paint.getValue());
+        ((mapObj)board).gc.setFill(paint.getValue());
+        ((mapObj)board).gc.setStroke(paint.getValue());
     }
 
     @FXML public void resize(){
-        world.resizeMap(xVal.getText(), yVal.getText(), scaleFactor.getText());
+       // ((mapObj)board).resizeMap(xVal.getText(), yVal.getText(), scaleFactor.getText());
     }
 
     @FXML public void draw(MouseEvent event){
@@ -103,7 +104,7 @@ public class mapEditController implements Initializable {
             if(this.Mode == 0){
                 TextInputDialog dialog = new TextInputDialog("Map Label");
                 String str = dialog.getResult();
-                world.gc.strokeText(str, (int) event.getX(), (int)event.getY());
+                ((mapObj)board).gc.strokeText(str, (int) event.getX(), (int)event.getY());
             }
             else if(this.Mode == 1){
                 TextInputDialog dialog = new TextInputDialog("Map Notes");
@@ -114,25 +115,25 @@ public class mapEditController implements Initializable {
         }
         else if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {
             if(this.Mode == 2) {
-                world.gc.beginPath();
-                world.gc.moveTo(event.getX(), event.getY());
-                world.gc.stroke();
+                ((mapObj)board).gc.beginPath();
+                ((mapObj)board).gc.moveTo(event.getX(), event.getY());
+                ((mapObj)board).gc.stroke();
             }
         }
         else if(event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
             if(this.Mode == 2) {
-                world.gc.lineTo(event.getX(), event.getY());
-                world.gc.stroke();
-                world.gc.closePath();
-                world.gc.beginPath();
-                world.gc.moveTo(event.getX(), event.getY());
+                ((mapObj)board).gc.lineTo(event.getX(), event.getY());
+                ((mapObj)board).gc.stroke();
+                ((mapObj)board).gc.closePath();
+                ((mapObj)board).gc.beginPath();
+                ((mapObj)board).gc.moveTo(event.getX(), event.getY());
             }
         }
         else if(event.getEventType() == MouseEvent.MOUSE_RELEASED){
             if(this.Mode == 2) {
-                world.gc.lineTo(event.getX(), event.getY());
-                world.gc.stroke();
-                world.gc.closePath();
+                ((mapObj)board).gc.lineTo(event.getX(), event.getY());
+                ((mapObj)board).gc.stroke();
+                ((mapObj)board).gc.closePath();
             }
         }
     }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+
+<fx:root type="javafx.scene.control.ScrollPane" xmlns:fx="http://javafx.com/fxml">
+    <Canvas fx:id="mapObj" height="650.0" width="1014.0" />
+</fx:root>

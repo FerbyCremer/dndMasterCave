@@ -1,5 +1,8 @@
 package com.user;
 
+import com.assets.mainEditController;
+import com.chat.Listener;
+import com.chat.chatController;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -35,9 +38,11 @@ public class LoginController implements Initializable {
     @FXML public TextField hostnameTextfield;
     @FXML private TextField portTextfield;
     @FXML private TextField usernameTextfield;
-    @FXML private ChoiceBox imagePicker;
+  //  @FXML private ChoiceBox imagePicker;
     @FXML private Label selectedPicture;
-    // public static ChatController chatter;
+     public static chatController chatter;
+     public static campaignController campaign;
+     public static mainEditController dmControl;
     @FXML private BorderPane frame;
     private double xOffset;
     private double yOffset;
@@ -54,27 +59,31 @@ public class LoginController implements Initializable {
         int port = Integer.parseInt(portTextfield.getText());
         String user = usernameTextfield.getText();
         String avatar = selectedPicture.getText();
+        Parent window;
+        Listener listener;
 
         if(role.isSelected()) {
-            FXMLLoader fmxlLoader = new FXMLLoader(getClass().getResource("/views/MapEditor.fxml"));
-            Parent window = (Pane) fmxlLoader.load();
-            //chatter = fmxlLoader.<ChatController>getController();
-            // Listener listener = new Listener(host, port, user, avatar, chatter);
+            FXMLLoader fmxlLoader = new FXMLLoader(getClass().getResource("/views/LiveCampaign.fxml"));
+            window = (Pane) fmxlLoader.load();
+            campaign = fmxlLoader.<campaignController>getController();
+            //chatter = fmxlLoader.<chatController>getController();
+            listener = new Listener(host, port, user, avatar, campaign);
         } else {
             FXMLLoader fmxlLoader = new FXMLLoader(getClass().getResource("/views/MainEditUI.fxml"));
-            Parent window = (Pane) fmxlLoader.load();
+            window = (BorderPane) fmxlLoader.load();
+            dmControl = fmxlLoader.<mainEditController>getController();
             //chatter = fmxlLoader.<ChatController>getController();
-            // Listener listener = new Listener(host, port, user, avatar, chatter);
+            listener = new Listener(host, port, user, avatar, dmControl);
         }
-        //  Thread x = new Thread(listener);
-        //   x.start();
-        //   this.scene = new Scene(window);
+          Thread x = new Thread(listener);
+           x.start();
+           this.scene = new Scene(window);
     }
 
     public void showScene() throws IOException {
         Platform.runLater( () -> {
             Stage stage = (Stage) hostnameTextfield.getScene().getWindow();
-            // stage.getResizable(true);
+            stage.setResizable(true);
             stage.setWidth(1040);
             stage.setHeight(620);
 
@@ -94,9 +103,9 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        imagePicker.getSelectionModel().selectFirst();
-        selectedPicture.textProperty().bind(imagePicker.getSelectionModel().selectedItemProperty());
-        selectedPicture.setVisible(false);
+//        imagePicker.getSelectionModel().selectFirst();
+      //  selectedPicture.textProperty().bind(imagePicker.getSelectionModel().selectedItemProperty());
+       // selectedPicture.setVisible(false);
 
         /* Drag and Drop */
         frame.setOnMousePressed(event -> {
