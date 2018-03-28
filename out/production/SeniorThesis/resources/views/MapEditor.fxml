@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-
-<BorderPane prefHeight="700.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mapEditController">
+<BorderPane prefHeight="700.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mapEditController">
    <bottom>
       <ToolBar id="mapTools" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
@@ -34,8 +36,8 @@
             </Button>
             <ColorPicker id="colorPicker" fx:id="paint" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="1.0" />
-            <Button mnemonicParsing="false" text="Button" />
-            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Lines" />
+            <Button mnemonicParsing="false" text="Images" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
             <TextField prefHeight="27.0" prefWidth="81.0" promptText="Grid Size" />
             <TextField prefHeight="27.0" prefWidth="89.0" promptText="Map Width" />
@@ -53,11 +55,7 @@
    <center>
       <ScrollPane id="mapScroll" pannable="true" prefViewportHeight="660.0" prefViewportWidth="1020.0">
          <content>
-            <Pane prefHeight="654.0" prefWidth="1017.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Canvas height="650.0" width="1014.0" />
-               </children>
-            </Pane>
+            <Canvas height="650.0" width="1014.0" />
          </content>
       </ScrollPane>
    </center>

@@ -3,6 +3,7 @@ package com.assets;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -35,7 +36,7 @@ public class mainEditController implements Initializable {
 
     //@FXML public SubScene mainSpace;
     @FXML public TreeView<File> ResourceLibrary;
-    @FXML public Canvas board = new mapObj();
+    @FXML public Canvas board;
     public BorderPane workSpace;
     public GraphicsContext gc;
     public GraphicsContext grid;
@@ -47,10 +48,10 @@ public class mainEditController implements Initializable {
     @FXML Button NoteBtn;
     @FXML Button LineBtn;
     @FXML ColorPicker paint;
-    public double scale;
+    public int scale;
 
-    public double width;
-    public double height;
+    public int width;
+    public int height;
 
     protected int hLineCount;
     protected int vLineCount;
@@ -60,10 +61,13 @@ public class mainEditController implements Initializable {
 //https://stackoverflow.com/questions/26690247/how-to-make-directories-expandable-in-javafx-treeview
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        init();
+        scale = 30;
+        width = 1014;
+        height = 650;
 
-//        board.widthProperty().bind(workSpace.widthProperty());
-  //      board.heightProperty().bind(workSpace.heightProperty());
+        board.setFocusTraversable(true);
+        gc = board.getGraphicsContext2D();
+        grid = board.getGraphicsContext2D();
 
         TextBtn.setOnMouseClicked(event -> {
             Mode = 0;
@@ -75,15 +79,20 @@ public class mainEditController implements Initializable {
             Mode = 2;
         });
 
-        //((mapObj)board).gc.setFill(paint.getValue());
-        //((mapObj)board).gc.setStroke(paint.getValue());
+        gc.setFill(Color.WHITE);
+        gc.setStroke(Color.BLACK);
 
-        //init file tree
+        // ------- init file tree ----------
         File currentDir = new File("resourceDirs");
-       // ResourceLibrary = new fileDirs();
+        //ResourceLibrary = new fileDirs();
         findFiles(currentDir,null);
 
         //init map area
+        init();
+
+        //board.widthProperty().bind(workSpace.widthProperty());
+        //board.heightProperty().bind(workSpace.heightProperty());
+
     }
 
     @FXML public void setBold(){
@@ -104,24 +113,26 @@ public class mainEditController implements Initializable {
         //db.setContent(content);
         //event.consume();
     }
+    @FXML public void setPaint() {
+        gc.setFill(paint.getValue());
+        gc.setStroke(paint.getValue());
+    }
     @FXML
     public void changeScale(){
         scaleFactor.setOnKeyTyped(event ->  {
-                if (event.getCode() == KeyCode.ENTER)
                     resize();
+                    System.out.println("enter");
         });
     }
     @FXML
-    public void changeHeight(){
-        yVal.setOnKeyTyped(event ->  {
-            if (event.getCode() == KeyCode.ENTER)
-                resize();
+    public void changeHeight() {
+        yVal.setOnKeyTyped(event -> {
+            resize();
         });
     }
 @FXML
     public void changeWidth(){
          xVal.setOnKeyTyped(event ->  {
-            if (event.getCode() == KeyCode.ENTER)
                  resize();
          });
     }
@@ -134,51 +145,66 @@ public class mainEditController implements Initializable {
         return ((int) y) + 0.5;
     }
 
-    public void resize(){
-         ((mapObj)board).resize(xVal.getText(), yVal.getText(), scaleFactor.getText());
+    private void resize(){
+        scale = Integer.parseInt(scaleFactor.getText());
+        width = Integer.parseInt(xVal.getText());
+        height = Integer.parseInt(yVal.getText());
+        System.out.println(scale);
+        init();
+        // ((mapObj)board).resize(xVal.getText(), yVal.getText(), scaleFactor.getText());
     }
-
-    @FXML public void draw(MouseEvent event){
-        if(event.getEventType() == MouseEvent.MOUSE_CLICKED){
-            if(this.Mode == 0){
+@FXML public void setLineBtn(){
+        this.Mode = 2;
+}
+@FXML public void setTextBtn(){
+        this.Mode = 0;
+}
+@FXML public void setNoteBtn(){
+        this.Mode = 1;
+}
+    public void drawText(MouseEvent event) {
+        board.requestFocus();
+        if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
+            if (this.Mode == 0) {
                 TextInputDialog dialog = new TextInputDialog("Map Label");
                 String str = dialog.getResult();
-               // ((mapObj)board).gc.strokeText(str, (int) event.getX(), (int)event.getY());
-            }
-            else if(this.Mode == 1){
+                // ((mapObj)board).gc.strokeText(str, (int) event.getX(), (int)event.getY());
+            } else if (this.Mode == 1) {
                 TextInputDialog dialog = new TextInputDialog("Map Notes");
                 String str = dialog.getResult();
                 Tooltip note = new Tooltip(str);
                 // Tooltip.install(((Node)event.getSource(), note);
             }
         }
-        else if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {
+    }
+    @FXML public void drawLine(MouseEvent event){
+        if(event.getEventType() == MouseEvent.MOUSE_PRESSED) {
             if(this.Mode == 2) {
-                /*((mapObj)board).gc.beginPath();
-                ((mapObj)board).gc.moveTo(event.getX(), event.getY());
-                ((mapObj)board).gc.stroke();*/
+                System.out.println("drawing shit");
+                gc.beginPath();
+                gc.moveTo(event.getX(), event.getY());
+                gc.stroke();
             }
         }
         else if(event.getEventType() == MouseEvent.MOUSE_DRAGGED) {
             if(this.Mode == 2) {
-                /*((mapObj)board).gc.lineTo(event.getX(), event.getY());
-                ((mapObj)board).gc.stroke();
-                ((mapObj)board).gc.closePath();
-                ((mapObj)board).gc.beginPath();
-                ((mapObj)board).gc.moveTo(event.getX(), event.getY());*/
+                gc.lineTo(event.getX(), event.getY());
+                gc.stroke();
+                gc.closePath();
+                gc.beginPath();
+                gc.moveTo(event.getX(), event.getY());
             }
         }
         else if(event.getEventType() == MouseEvent.MOUSE_RELEASED){
             if(this.Mode == 2) {
-                /*((mapObj)board).gc.lineTo(event.getX(), event.getY());
-                ((mapObj)board).gc.stroke();
-                ((mapObj)board).gc.closePath();*/
+                gc.lineTo(event.getX(), event.getY());
+                gc.stroke();
+                gc.closePath();
             }
         }
     }
     private void findFiles(File dir, TreeItem<File> parent){
         TreeItem<File> root = new TreeItem<>(dir);
-        //root.setExpanded(true);
         if (root.toString().contains("Script")) {
             root.setGraphic(scriptIcon);
         }
@@ -211,17 +237,15 @@ public class mainEditController implements Initializable {
 
     public void init(){
         //gc = getGraphicsContext2D();
-        scale = 30;
-        width = 1014;
-        height = 650;
+
         hLineCount = (int) Math.floor((height + 1) / scale);
         vLineCount = (int) Math.floor((width + 1) / scale);
-        grid = board.getGraphicsContext2D();
+        //grid = board.getGraphicsContext2D();
 
-        grid.setFill(GREEN);
+        grid.setFill(Color.WHITE);
         grid.fillRect(0,0, width, height);
-        grid.setLineWidth(4);
-        grid.setStroke(Color.RED);
+        grid.setLineWidth(1);
+        grid.setStroke(Color.GRAY);
 
         for (int i = 0; i < this.hLineCount; i++) {
             grid.strokeLine(0, snap((i + 1) * this.scale), this.width, snap((i + 1) * this.scale));
@@ -230,6 +254,13 @@ public class mainEditController implements Initializable {
         for (int i = 0; i < this.vLineCount; i++) {
             grid.strokeLine(snap((i + 1) * this.scale), 0, snap((i + 1) * this.scale), this.height);
         }
+
+    }
+    @FXML public void clearAll(){
+        gc.clearRect(0, 0, width, height);
+    }
+
+    @FXML public void saveMap(){
 
     }
 

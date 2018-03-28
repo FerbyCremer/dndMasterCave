@@ -21,7 +21,7 @@ public class fileDirs extends TreeView {
     @FXML
     private TreeView<File> lib;
     public fileDirs() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/views/customComponents/FileDir.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("/view/customComponents/FileDir.fxml"));
         fxmlLoader.setRoot(this);
         try {
             fxmlLoader.load();

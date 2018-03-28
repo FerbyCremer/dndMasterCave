@@ -1,14 +1,167 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.user.campaignController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@../css/ChatViewStyle.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.user.playController">
+   <center>
+       <Pane id="maps" fx:id="mapPane">
+         <children>
+            <ImageView id="campaignMap" fitHeight="720.0" fitWidth="775.0" pickOnBounds="true" preserveRatio="true" styleClass=".campaignMap">
+               <image>
+                  <Image url="@/com.server.Campaign.getMap()" />
+               </image>
+            </ImageView>
+         </children></Pane>
+   </center>
+    <right>
+        <BorderPane fx:id="chatFrame" maxHeight="720.0" maxWidth="450" prefHeight="720.0" prefWidth="250.0">
+            <center>
+                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="243.0" prefWidth="460.0">
+                    <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" pannable="true" prefHeight="496.0" vbarPolicy="ALWAYS" vmin="1.0" vvalue="1.0" VBox.vgrow="ALWAYS">
+                            <content>
+                                <ListView fx:id="chatPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="541.0" prefWidth="254.0" />
+                            </content>
+                        </ScrollPane>
+                        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" VBox.vgrow="NEVER">
+                            <children>
+                                <TextArea fx:id="messageBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="100.0" nodeOrientation="LEFT_TO_RIGHT" onKeyPressed="#sendMethod" prefHeight="16.0" prefWidth="172.0" promptText="Enter Message..." scaleShape="false" HBox.hgrow="ALWAYS">
+                                    <font>
+                                        <Font name="SansSerif Regular" size="14.0" />
+                                    </font>
+                                </TextArea>
+                                <Button fx:id="buttonSend" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendButtonAction" prefHeight="43.0" prefWidth="58.0" scaleShape="false" text="Send" textAlignment="CENTER" HBox.hgrow="NEVER" />
+                                <Button fx:id="recordBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMousePressed="#recordVoiceMessage">
+                                    <graphic>
+                                        <ImageView fx:id="microphoneImageView" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../icons/file_1.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                        </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </center>
+            <bottom>
+                <VBox maxHeight="1.7976931348623157E308" prefWidth="250.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox fx:id="onlineUsersHbox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="217.0" stylesheets="@../css/ListViewStyle.css">
+                            <children>
+                                <Label prefHeight="50.0" prefWidth="124.0" stylesheets="@../css/ListViewStyle.css" text="Online Users:" textAlignment="CENTER" textFill="#fc6747">
+                                    <font>
+                                        <Font name="SansSerif Regular" size="14.0" />
+                                    </font>
+                                    <padding>
+                                        <Insets left="10.0" />
+                                    </padding>
+                                    <opaqueInsets>
+                                        <Insets bottom="10.0" />
+                                    </opaqueInsets>
+                                </Label>
+                                <Label fx:id="onlineCountLabel" prefHeight="48.0" prefWidth="94.0" text="0" textFill="#fc6747">
+                                    <opaqueInsets>
+                                        <Insets />
+                                    </opaqueInsets>
+                                    <font>
+                                        <Font name="SansSerif Regular" size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <ListView fx:id="userList" focusTraversable="false" prefHeight="200.0" prefWidth="250.0" style="-fx-border-image-width: 0;">
+                           </ListView>
+                    </children>
+                </VBox>
+            </bottom>
+            <top>
+                <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #031c30;" BorderPane.alignment="CENTER">
+                    <center>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                            <image>
+                                <Image url="@../icons/npc.png" />
+                            </image>
+                            <BorderPane.margin>
+                                <Insets />
+                            </BorderPane.margin>
+                        </ImageView>
+                    </center>
+                    <right>
+                        <HBox prefHeight="24.0" prefWidth="30.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <ImageView fitHeight="22.0" fitWidth="21.0" onMousePressed="#closeApplication" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../icons/script_2.png" />
+                                    </image>
+                                    <HBox.margin>
+                                        <Insets right="30.0" top="30.0" />
+                                    </HBox.margin>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </ImageView>
+                            </children>
+                        </HBox>
+                    </right>
+                    <left>
+                        <HBox prefWidth="200.0" BorderPane.alignment="CENTER">
+                            <children>
+                                <ImageView fx:id="userImageView" fitHeight="69.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../icons/npc.png" />
+                                    </image>
+                                    <HBox.margin>
+                                        <Insets left="10.0" top="10.0" />
+                                    </HBox.margin>
+                                </ImageView>
+                                <VBox>
+                                    <HBox.margin>
+                                        <Insets left="10.0" top="5.0" />
+                                    </HBox.margin>
+                                    <children>
+                                        <Label fx:id="usernameLabel" text="Dominic Heal" textFill="#fa6648">
+                                            <font>
+                                                <Font name="HelveticaNeue Medium" size="14.0" />
+                                            </font>
+                                        </Label>
+                                        <ComboBox fx:id="statusComboBox" prefHeight="25.0" prefWidth="101.0" promptText="Online">
+                                            <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                    <String fx:value="Online" />
+                                                    <String fx:value="Away" />
+                                                    <String fx:value="Busy" />
+                                                </FXCollections>
+                                            </items>
+                                        </ComboBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                  </HBox>
+                    </left>
+                </BorderPane>
+            </top>
+            <rotationAxis>
+                <Point3D />
+            </rotationAxis>
+        </BorderPane>
+   </right>
+</BorderPane>

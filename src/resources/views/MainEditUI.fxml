@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.canvas.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
@@ -22,92 +16,92 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.layout.StackPane?>
 
-<BorderPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mainEditController">
-   <top>
-      <MenuBar BorderPane.alignment="CENTER">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="New" />
-                  <MenuItem mnemonicParsing="false" text="Open" />
-                  <MenuItem mnemonicParsing="false" text="Save" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Editor">
-            <items>
-              <MenuItem fx:id="mapScene" mnemonicParsing="false" onAction="#loadMapEditor" text="Map Editor" />
-                  <MenuItem fx:id="npcScene" mnemonicParsing="false" onAction="#loadNPCeditor" text="NPC/Monster Editor" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Aesthetics">
-            <items>
-                  <RadioMenuItem fx:id="launch" mnemonicParsing="false" onAction="#launchCampaign" text="Launch Campaign" />
-              <MenuItem fx:id="ThemeEdit" mnemonicParsing="false" onAction="#EditTheme" text="Edit CSS" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-   </top>
-   <center>
-       <StackPane id="mapScroll" BorderPane.alignment="CENTER">
-          <children>
-              <Canvas id="drawingBoard" fx:id="board" cache="true" height="650.0" width="1014.0" />
-          </children>
-       </StackPane>
-   </center>
-   <left>
-      <TreeView id="ResourceLib" fx:id="ResourceLibrary" editable="true" nodeOrientation="LEFT_TO_RIGHT" showRoot="false" BorderPane.alignment="CENTER" />
-   </left>
+<BorderPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mainEditController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="New" />
+                        <MenuItem mnemonicParsing="false" text="Open" />
+                        <MenuItem mnemonicParsing="false" text="Save" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Editor">
+                    <items>
+                        <MenuItem fx:id="mapScene" mnemonicParsing="false" onAction="#loadMapEditor" text="Map Editor" />
+                        <MenuItem fx:id="npcScene" mnemonicParsing="false" onAction="#loadNPCeditor" text="NPC/Monster Editor" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Aesthetics">
+                    <items>
+                        <RadioMenuItem fx:id="launch" mnemonicParsing="false" onAction="#launchCampaign" text="Launch Campaign" />
+                        <MenuItem fx:id="ThemeEdit" mnemonicParsing="false" onAction="#EditTheme" text="Edit CSS" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+      <ScrollPane>
+         <content>
+                <Canvas id="drawingBoard" fx:id="board" cache="true" focusTraversable="true" height="650.0" onMouseClicked="#drawText" onMouseDragged="#drawLine" onMousePressed="#drawLine" onMouseReleased="#drawLine" width="1014.0" />
+         </content>
+      </ScrollPane>
+    </center>
+    <left>
+        <TreeView id="ResourceLib" fx:id="ResourceLibrary" editable="true" nodeOrientation="LEFT_TO_RIGHT" showRoot="false" BorderPane.alignment="CENTER" />
+    </left>
     <bottom>
         <ToolBar id="mapTools" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <items>
-            <Button fx:id="live" mnemonicParsing="false" text="Launch" />
-            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
-                <Button id="noteBtn" fx:id="NoteBtn" mnemonicParsing="false" text="Note">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets></Button>
-                <Button id="text" fx:id="TextBtn" mnemonicParsing="false" text="Text" />
+                <Button fx:id="live" mnemonicParsing="false" text="Launch" />
+                <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
+                <Button id="noteBtn" fx:id="NoteBtn" mnemonicParsing="false" onAction="#setNoteBtn" text="Note">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                </Button>
+                <Button id="text" fx:id="TextBtn" mnemonicParsing="false" onAction="#setTextBtn" text="Text" />
                 <ChoiceBox id="FontPicker" prefWidth="150.0" />
-                <Button id="bold" mnemonicParsing="false" text="B">
+                <Button id="bold" fx:id="bold" mnemonicParsing="false" text="B">
                     <font>
                         <Font name="Georgia Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button id="underline" mnemonicParsing="false" text="U">
+                <Button id="underline" fx:id="underline" mnemonicParsing="false" text="U">
                     <font>
                         <Font name="Georgia" size="13.0" />
                     </font>
                 </Button>
-                <Button id="Italic" mnemonicParsing="false" text="I">
+                <Button id="Italic" fx:id="italic" mnemonicParsing="false" text="I">
                     <font>
                         <Font name="Georgia Italic" size="13.0" />
                     </font>
                 </Button>
-                <ColorPicker id="colorPicker" fx:id="paint" />
+                <ColorPicker id="colorPicker" fx:id="paint" onAction="#setPaint" />
                 <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="1.0" />
-                <Button fx:id="LineBtn" mnemonicParsing="false" text="Lines" />
+                <Button fx:id="LineBtn" mnemonicParsing="false" onAction="#setLineBtn" text="Lines" />
                 <Button fx:id="imgBtn" mnemonicParsing="false" text="Images" />
                 <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
-                <TextField prefHeight="27.0" prefWidth="81.0" promptText="Grid Size" />
-                <TextField prefHeight="27.0" prefWidth="89.0" promptText="Map Width" />
-                <TextField prefHeight="27.0" prefWidth="100.0" promptText="Map Height" />
+                <TextField fx:id="scaleFactor" onAction="#changeScale" prefHeight="27.0" prefWidth="81.0" promptText="Grid Size" text="30" />
+                <TextField onAction="#changeWidth" prefHeight="27.0" prefWidth="89.0" promptText="Map Width" text="1014" fx:id="xVal" />
+                <TextField fx:id="yVal" onAction="#changeHeight" prefHeight="27.0" prefWidth="100.0" promptText="Map Height" text="650" />
                 <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
                 <Button mnemonicParsing="false" text="Save" />
-                <Button mnemonicParsing="false" text="Delete">
+                <Button fx:id="delete" mnemonicParsing="false" text="Delete">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
                 </Button>
             </items>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
         </ToolBar>
     </bottom>
 </BorderPane>

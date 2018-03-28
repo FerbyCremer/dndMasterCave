@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.image.Image?>
-<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Point3D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="chatFrame" maxHeight="620" maxWidth="450" prefHeight="550.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.chatController">
+<BorderPane fx:id="chatFrame" maxHeight="620" maxWidth="450" prefHeight="550.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.chat.chatController">
     <center>
         <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
             <children>
@@ -28,12 +34,12 @@
                                 <Font name="SansSerif Regular" size="14.0" />
                             </font>
                         </TextArea>
-                        <Button fx:id="buttonSend" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendButtonAction" prefHeight="43.0" prefWidth="140.0" scaleShape="false" text="Send" textAlignment="CENTER" HBox.hgrow="NEVER" />
+                        <Button fx:id="buttonSend" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendButtonAction" prefHeight="43.0" prefWidth="58.0" scaleShape="false" text="Send" textAlignment="CENTER" HBox.hgrow="NEVER" />
                         <Button fx:id="recordBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMousePressed="#recordVoiceMessage">
                             <graphic>
                                 <ImageView fx:id="microphoneImageView" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../icons/microphone.png" />
+                                        <Image url="@../icons/file_1.png" />
                                     </image>
                                 </ImageView>
                             </graphic></Button>
@@ -47,7 +53,7 @@
             <children>
                 <HBox fx:id="onlineUsersHbox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="217.0" stylesheets="@../css/ListViewStyle.css">
                     <children>
-                        <Label prefHeight="50.0" prefWidth="124.0" text="Online Users:" textAlignment="CENTER" textFill="#fc6747">
+                        <Label prefHeight="50.0" prefWidth="124.0" stylesheets="@../css/ListViewStyle.css" text="Online Users:" textAlignment="CENTER" textFill="#fc6747">
                             <font>
                                 <Font name="SansSerif Regular" size="14.0" />
                             </font>
@@ -68,7 +74,7 @@
                         </Label>
                     </children>
                 </HBox>
-                <ListView fx:id="userList" focusTraversable="false" maxHeight="1.7976931348623157E308" prefHeight="495.0" prefWidth="217.0" style="-fx-border-image-width: 0;" stylesheets="@../css/ListViewStyle.css">
+                <ListView fx:id="userList" focusTraversable="false" maxHeight="1.7976931348623157E308" prefHeight="495.0" prefWidth="217.0" style="-fx-border-image-width: 0;">
                 </ListView>
             </children>
         </VBox>
@@ -78,7 +84,7 @@
             <center>
                 <ImageView fitHeight="79.0" fitWidth="522.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                     <image>
-                        <Image url="@../icons/fxchat.png" />
+                        <Image url="@../icons/npc.png" />
                     </image>
                     <BorderPane.margin>
                         <Insets right="100.0" />
@@ -86,22 +92,11 @@
                 </ImageView>
             </center>
             <right>
-                <HBox prefHeight="24.0" prefWidth="30.0" stylesheets="@../css/ButtonStyle.css" BorderPane.alignment="CENTER">
+                <HBox prefHeight="24.0" prefWidth="30.0" BorderPane.alignment="CENTER">
                     <children>
-                        <ImageView fitHeight="23.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="button">
+                        <ImageView fitHeight="22.0" fitWidth="21.0" onMousePressed="#closeApplication" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../icons/settings.png" />
-                            </image>
-                            <HBox.margin>
-                                <Insets right="30.0" top="30.0" />
-                            </HBox.margin>
-                            <cursor>
-                                <Cursor fx:constant="HAND" />
-                            </cursor>
-                        </ImageView>
-                        <ImageView fitHeight="22.0" fitWidth="21.0" onMousePressed="#closeApplication" pickOnBounds="true" preserveRatio="true" styleClass="button">
-                            <image>
-                                <Image url="@../icons/close_normal.png" />
+                                <Image url="@../icons/script_2.png" />
                             </image>
                             <HBox.margin>
                                 <Insets right="30.0" top="30.0" />
@@ -118,7 +113,7 @@
                     <children>
                         <ImageView fx:id="userImageView" fitHeight="69.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../icons/default.png" />
+                                <Image url="@../icons/npc.png" />
                             </image>
                             <HBox.margin>
                                 <Insets left="10.0" top="10.0" />
@@ -134,7 +129,7 @@
                                         <Font name="HelveticaNeue Medium" size="14.0" />
                                     </font>
                                 </Label>
-                                <ComboBox fx:id="statusComboBox" prefHeight="25.0" prefWidth="101.0" promptText="Online" stylesheets="@../css/ComboBox.css">
+                                <ComboBox fx:id="statusComboBox" prefHeight="25.0" prefWidth="101.0" promptText="Online">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
                                             <String fx:value="Online" />
