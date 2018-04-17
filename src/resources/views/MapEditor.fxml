@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="700.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mapEditController">
+   <bottom>
+      <ToolBar id="mapTools" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+            <Button id="noteBtn" fx:id="NoteBtn" mnemonicParsing="false" text="Note" />
+            <Button id="text" fx:id="TextBtn" mnemonicParsing="false" text="Text" />
+            <ChoiceBox id="FontPicker" prefWidth="150.0" />
+          <Button id="bold" mnemonicParsing="false" text="B">
+               <font>
+                  <Font name="Georgia Bold" size="13.0" />
+               </font>
+            </Button>
+            <Button id="underline" mnemonicParsing="false" text="U">
+               <font>
+                  <Font name="Georgia" size="13.0" />
+               </font>
+            </Button>
+            <Button id="Italic" mnemonicParsing="false" text="I">
+               <font>
+                  <Font name="Georgia Italic" size="13.0" />
+               </font>
+            </Button>
+            <ColorPicker id="colorPicker" fx:id="paint" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="1.0" />
+            <Button mnemonicParsing="false" text="Lines" />
+            <Button mnemonicParsing="false" text="Images" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
+            <TextField prefHeight="27.0" prefWidth="81.0" promptText="Grid Size" />
+            <TextField prefHeight="27.0" prefWidth="89.0" promptText="Map Width" />
+            <TextField prefHeight="27.0" prefWidth="100.0" promptText="Map Height" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+            <Button mnemonicParsing="false" text="Save" />
+            <Button mnemonicParsing="false" text="Delete">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
+        </items>
+      </ToolBar>
+   </bottom>
+   <center>
+      <ScrollPane id="mapScroll" pannable="true" prefViewportHeight="660.0" prefViewportWidth="1020.0">
+         <content>
+            <Canvas height="650.0" width="1014.0" />
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mainEditController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="New" />
+                        <MenuItem mnemonicParsing="false" text="Open" />
+                        <MenuItem mnemonicParsing="false" text="Save" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Editor">
+                    <items>
+                        <MenuItem fx:id="mapScene" mnemonicParsing="false" onAction="#loadMapEditor" text="Map Editor" />
+                        <MenuItem fx:id="npcScene" mnemonicParsing="false" onAction="#loadNPCeditor" text="NPC/Monster Editor" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Aesthetics">
+                    <items>
+                        <RadioMenuItem fx:id="launch" mnemonicParsing="false" onAction="#launchCampaign" text="Launch Campaign" />
+                        <MenuItem fx:id="ThemeEdit" mnemonicParsing="false" onAction="#EditTheme" text="Edit CSS" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center>
+      <ScrollPane>
+         <content>
+                <Canvas id="drawingBoard" fx:id="board" cache="true" focusTraversable="true" height="650.0" onMouseClicked="#drawText" onMouseDragged="#drawLine" onMousePressed="#drawLine" onMouseReleased="#drawLine" width="1014.0" />
+         </content>
+      </ScrollPane>
+    </center>
+    <left>
+        <TreeView id="ResourceLib" fx:id="ResourceLibrary" editable="true" nodeOrientation="LEFT_TO_RIGHT" showRoot="false" BorderPane.alignment="CENTER" />
+    </left>
+    <bottom>
+        <ToolBar id="mapTools" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <items>
+                <Button fx:id="live" mnemonicParsing="false" text="Launch" onAction="#launchCampaign"/>
+                <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
+                <Button id="noteBtn" fx:id="NoteBtn" mnemonicParsing="false" onAction="#setNoteBtn" text="Note" />
+                <Button id="text" fx:id="TextBtn" mnemonicParsing="false" onAction="#setTextBtn" text="Text" />
+                <TextField id="fontSize" fx:id="fontSize" onAction="#setFontSize" prefHeight="27.0" prefWidth="81.0" promptText="font size" text="12" />
+                <ChoiceBox id="FontPicker" prefWidth="150.0" />
+                <Button id="bold" fx:id="bold" mnemonicParsing="false" text="B" onAction="#setBold">
+                    <font>
+                        <Font name="Georgia Bold" size="13.0" />
+                    </font>
+                </Button>
+                <Button id="Italic" fx:id="italic" mnemonicParsing="false" text="I" onAction="#setItalic">
+                    <font>
+                        <Font name="Georgia Italic" size="13.0" />
+                    </font>
+                </Button>
+                <ColorPicker id="colorPicker" fx:id="paint" onAction="#setPaint" />
+                <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="1.0" />
+                <Button fx:id="LineBtn" mnemonicParsing="false" onAction="#setLineBtn" text="Lines" />
+                <Button fx:id="EraseBtn" mnemonicParsing="false" onAction="#setErase" text="Erase" />
+                <Button fx:id="imgBtn" mnemonicParsing="false" text="Images" />
+                <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
+                <TextField fx:id="scaleFactor" onAction="#changeScale" prefHeight="27.0" prefWidth="81.0" promptText="Grid Size" text="30" />
+                <TextField onAction="#changeWidth" prefHeight="27.0" prefWidth="89.0" promptText="Map Width" text="1014" fx:id="xVal" />
+                <TextField fx:id="yVal" onAction="#changeHeight" prefHeight="27.0" prefWidth="100.0" promptText="Map Height" text="650" />
+                <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" />
+                <Button mnemonicParsing="false" text="Save" onAction="#saveMap"/>
+                <Button fx:id="delete" mnemonicParsing="false" text="Delete" onAction="#clearAll" />
+            </items>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </ToolBar>
+    </bottom>
+</BorderPane>
