@@ -34,6 +34,7 @@ import javafx.beans.value.ChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class mainEditController implements Initializable {
@@ -243,13 +244,26 @@ public class mainEditController implements Initializable {
         if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
             if (this.Mode == 0) {
                 TextInputDialog dialog = new TextInputDialog("Map Label");
-                String str = dialog.getResult();
-                gc.strokeText(str, (int) event.getX(), (int)event.getY());
+                dialog.setTitle("Labeling");
+                dialog.setHeaderText("Enter a map label:");
+
+                Optional<String> result = dialog.showAndWait();
+
+                result.ifPresent(str -> {
+                    gc.fillText(str, (int) event.getX(), (int)event.getY());
+                });
+
             } else if (this.Mode == 1) {
                 TextInputDialog dialog = new TextInputDialog("Map Notes");
-                String str = dialog.getResult();
-                Tooltip note = new Tooltip(str);
-                Tooltip.install(((Node)event.getSource()), note);
+                dialog.setTitle("Labeling");
+                dialog.setHeaderText("Enter a map label:");
+
+                Optional<String> result = dialog.showAndWait();
+
+                result.ifPresent(str -> {
+                    Tooltip note = new Tooltip(str);
+                    Tooltip.install(((Node)event.getSource()), note);
+                });
             }
         }
     }
@@ -335,12 +349,13 @@ public class mainEditController implements Initializable {
     @FXML public void launchCampaign(ActionEvent actionEvent) throws IOException {
         LaunchListener listener;
         Parent window;
-        FXMLLoader fmxlLoader = new FXMLLoader(getClass().getResource("/views/LiveController.fxml"));
+        FXMLLoader fmxlLoader = new FXMLLoader(getClass().getClassLoader().getResource("views/LiveCampaign.fxml"));
         window = (BorderPane) fmxlLoader.load();
         dmControl = fmxlLoader.<campaignController>getController();
         listener = new LaunchListener(host, port, user, avatar, dmControl);
 
         Thread x = new Thread(listener);
+        x.setDaemon(true);
         x.start();
         this.scene = new Scene(window);
     }

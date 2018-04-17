@@ -292,7 +292,7 @@ public class campaignController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        File currentDir = new File("Maps").getAbsoluteFile();
+        File currentDir = new File(getClass().getResourceAsStream("/resourceDirs/Maps").toString());
         findFiles(currentDir,null);
 
         try {

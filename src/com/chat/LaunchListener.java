@@ -62,38 +62,42 @@ public class LaunchListener implements Runnable{
         logger.info("Connection accepted " + socket.getInetAddress() + ":" + socket.getPort());
 
         try {
-            connect();
-            logger.info("Sockets in and out ready!");
-            while (socket.isConnected()) {
-                Message message = null;
-                message = (Message) input.readObject();
+            try {
+                connect();
+                logger.info("Sockets in and out ready!");
+                while (socket.isConnected()) {
+                    Message message = null;
+                    message = (Message) input.readObject();
 
-                if (message != null) {
-                    logger.debug("Message recieved:" + message.getMsg() + " MessageType:" + message.getType() + "Name:" + message.getName());
-                    switch (message.getType()) {
-                        case USER:
-                            controller.addToChat(message);
-                            break;
-                        case VOICE:
-                            controller.addToChat(message);
-                            break;
-                        case NOTIFICATION:
-                            controller.newUserNotification(message);
-                            break;
-                        case SERVER:
-                            controller.addAsServer(message);
-                            break;
-                        case CONNECTED:
-                            controller.setUserList(message);
-                            break;
-                        case DISCONNECTED:
-                            controller.setUserList(message);
-                            break;
-                        case STATUS:
-                            controller.setUserList(message);
-                            break;
+                    if (message != null) {
+                        logger.debug("Message recieved:" + message.getMsg() + " MessageType:" + message.getType() + "Name:" + message.getName());
+                        switch (message.getType()) {
+                            case USER:
+                                controller.addToChat(message);
+                                break;
+                            case VOICE:
+                                controller.addToChat(message);
+                                break;
+                            case NOTIFICATION:
+                                controller.newUserNotification(message);
+                                break;
+                            case SERVER:
+                                controller.addAsServer(message);
+                                break;
+                            case CONNECTED:
+                                controller.setUserList(message);
+                                break;
+                            case DISCONNECTED:
+                                controller.setUserList(message);
+                                break;
+                            case STATUS:
+                                controller.setUserList(message);
+                                break;
+                        }
                     }
                 }
+            }catch (EOFException e){
+                e.printStackTrace();
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

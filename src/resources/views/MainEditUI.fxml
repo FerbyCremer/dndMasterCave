@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.assets.mainEditController">
+<BorderPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="com.assets.mainEditController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
@@ -85,12 +85,6 @@
                 <Button mnemonicParsing="false" text="Save" onAction="#saveMap"/>
                 <Button fx:id="delete" mnemonicParsing="false" text="Delete" onAction="#clearAll" />
             </items>
-            <opaqueInsets>
-                <Insets />
-            </opaqueInsets>
-            <BorderPane.margin>
-                <Insets />
-            </BorderPane.margin>
         </ToolBar>
     </bottom>
 </BorderPane>
