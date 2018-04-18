@@ -85,7 +85,7 @@ public class campaignController implements Initializable{
     }
 
     private void findFiles(File dir, TreeItem<File> parent){
-        TreeItem<File> root = new TreeItem<>(dir);
+        TreeItem<File> root = new TreeItem<File>(dir);
         root.setExpanded(true);
         root.setGraphic(rootIcon);
         try {
@@ -98,7 +98,6 @@ public class campaignController implements Initializable{
                     System.out.println("     file:" + file.getCanonicalPath());
                     root.getChildren().add(new TreeItem<>(file, leafIcon));
                 }
-
             }
             if (parent == null) {
                 ResourceLibrary.setRoot(root);
@@ -292,7 +291,7 @@ public class campaignController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        File currentDir = new File(getClass().getResourceAsStream("/resourceDirs/Maps").toString());
+        File currentDir = new File("resourceDirs/Maps");
         findFiles(currentDir,null);
 
         try {

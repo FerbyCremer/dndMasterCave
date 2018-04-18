@@ -253,4 +253,23 @@ public class LoginController implements Initializable {
         });
 
     }
+
+    public void logoutScene() {
+        Platform.runLater(() -> {
+            FXMLLoader fmxlLoader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
+            Parent window = null;
+            try {
+                window = (Pane) fmxlLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Stage stage = MainLaunch.getPrimaryStage();
+            Scene scene = new Scene(window);
+            stage.setMaxWidth(350);
+            stage.setMaxHeight(420);
+            stage.setResizable(false);
+            stage.setScene(scene);
+            stage.centerOnScreen();
+        });
+    }
 }

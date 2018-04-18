@@ -4,7 +4,10 @@ import com.chat.LaunchListener;
 import com.chat.util.ResizeHelper;
 import com.user.MainLaunch;
 import com.user.campaignController;
+import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,27 +16,40 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TreeItemPropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import javafx.beans.value.ChangeListener;
+import javafx.util.Callback;
 
-import java.io.File;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.tree.TreeNode;
+import java.awt.*;
+import java.awt.image.RenderedImage;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -84,7 +100,7 @@ public class mainEditController implements Initializable {
 
     public static mainEditController getInstance() { return instance; }
 
-//https://stackoverflow.com/questions/26690247/how-to-make-directories-expandable-in-javafx-treeview
+    //https://stackoverflow.com/questions/26690247/how-to-make-directories-expandable-in-javafx-treeview
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
@@ -92,7 +108,7 @@ public class mainEditController implements Initializable {
         width = 1014;
         height = 650;
 
-        board.setFocusTraversable(true);
+        //board.setFocusTraversable(true);
         gc = board.getGraphicsContext2D();
         grid = board.getGraphicsContext2D();
 
@@ -108,9 +124,58 @@ public class mainEditController implements Initializable {
 
         lineOptions();
 
+        ResourceLibrary.setCellFactory(new Callback<>() {
+
+            public TreeCell<File> call(TreeView<File> tv) {
+                return new TreeCell<>() {
+
+                    @Override
+                    protected void updateItem(File item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty == false){
+                            setText(item.getName());
+                            if (item.isDirectory()) {
+                                setGraphic(rootIcon);
+                                if (item.getName().contains("Script")) {
+                                    setGraphic(scriptIcon);
+                                }
+                                else if (item.getName().contains("Characters")) {
+                                    setGraphic(npcIcon);
+                                }
+                            } else {
+                                setGraphic(leafIcon);
+                            }
+                        }
+                        else {
+                            setText("");
+                            setGraphic(null);
+                        }
+                    }
+                };
+            }
+        });
+
+        // Add mouse event handlers for the source
+        ResourceLibrary.setOnDragDetected(event -> {
+                dragDetected(event);
+        });
+
+        ResourceLibrary.setOnDragDone(event -> {
+                dragDone(event);
+        });
+
+        // Add mouse event handlers for the target
+        board.setOnDragOver(event -> {
+                dragOver(event);
+        });
+
+        board.setOnDragDropped(event -> {
+                dragDropped(event);
+        });
+
         //board.widthProperty().bind(workSpace.widthProperty());
         //board.heightProperty().bind(workSpace.heightProperty());
-
     }
 
     public void init(){
@@ -149,40 +214,125 @@ public class mainEditController implements Initializable {
             font.equals(gc.getFont());
         });
     }
-    @FXML public void DragAndDrop(MouseEvent event){
-        //TreeItem target = (TreeItem) event.getSource();
-        //Dragboard db = event.StartDragAndDrop(TransferMode.MOVE);
-        //ClipboardContent content = new ClipboardContent();
-        //// Store node ID in order to know what is dragged.
-        //content.putString(target.getId());
-        //db.setContent(content);
-        //event.consume();
+
+    private void dragDetected(MouseEvent event)
+    {
+        // User can drag only when there is text in the source field
+        File sourceText = ResourceLibrary.getSelectionModel().getSelectedItem().getValue();
+
+        // Initiate a drag-and-drop gesture
+        Dragboard dragboard = ResourceLibrary.startDragAndDrop(TransferMode.ANY);
+        Image image;
+        try {
+            //List<File> phil = dragboard.getFiles();
+            FileInputStream fis = new FileInputStream(sourceText);
+            image = new Image(fis);
+        } catch (FileNotFoundException e){
+            event.consume();
+            return;
+        }
+
+
+        // Add the source text to the Dragboard
+        ClipboardContent content = new ClipboardContent();
+        content.putImage(image);
+        dragboard.setContent(content);
+        event.consume();
     }
+
+    private void dragOver(DragEvent event)
+    {
+        // If drag board has a string, let the event know that
+        // the target accepts copy and move transfer modes
+        Dragboard dragboard = event.getDragboard();
+
+        if (dragboard.hasImage())
+            event.acceptTransferModes(TransferMode.ANY);
+
+        event.consume();
+    }
+
+    private void dragDropped(DragEvent event)
+    {
+
+        // Transfer the data to the target
+        Dragboard dragboard = event.getDragboard();
+
+        if (dragboard.hasImage())
+        {
+            Image src = dragboard.getImage();
+                gc.drawImage(src, event.getX() - src.getWidth()/2, event.getY() - src.getHeight()/2);
+
+            // Data transfer is successful
+            event.setDropCompleted(true);
+        }
+        else
+        {
+            // Data transfer is not successful
+            event.setDropCompleted(false);
+        }
+        event.consume();
+    }
+
+    private void dragDone(DragEvent event)
+    {
+        // Check how data was transfered to the target. If it was moved, clear the text in the source.
+        TransferMode modeUsed = event.getTransferMode();
+
+        if (modeUsed == TransferMode.MOVE)
+        {
+            //ResourceLibrary.setText("");
+        }
+
+        event.consume();
+    }
+
     @FXML public void setPaint() {
         gc.setFill(paint.getValue());
         gc.setStroke(paint.getValue());
     }
+
     @FXML public void changeScale(){
         scaleFactor.setOnKeyTyped(event ->  {
-                    resize();
-                    System.out.println("enter");
+            resize();
+            System.out.println("enter");
         });
     }
+
     @FXML public void changeHeight() {
         yVal.setOnKeyTyped(event -> {
             resize();
         });
     }
+
     @FXML public void changeWidth(){
-         xVal.setOnKeyTyped(event ->  {
-                 resize();
-         });
+        xVal.setOnKeyTyped(event ->  {
+            resize();
+        });
     }
 
-    public void addAsset(){
-        // mapFileView.startDragAndDrop(TransferMode.ANY)
-        //);
+    public void loadImage() {
+        FileChooser chooser = new FileChooser();
+
+        File map = chooser.showOpenDialog(board.getScene().getWindow());
+
+        File directory = new File("resourceDirs/Images" + File.separator + map.getName());
+        try {
+            System.out.println(directory.getCanonicalPath());
+            Files.copy(map.toPath(), directory.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            WritableImage writableImage = new WritableImage((int) board.getWidth(), (int) board.getHeight());
+            SnapshotParameters sp = new SnapshotParameters();
+            sp.setFill(Color.TRANSPARENT);
+            board.snapshot(sp, writableImage);
+            RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+            ImageIO.write(renderedImage, ".png", map);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        findFiles(ResourceLibrary.getRoot().getValue(), null);
+        ResourceLibrary.refresh();
     }
+
     private double snap(double y) {
         return ((int) y) + 0.5;
     }
@@ -195,18 +345,22 @@ public class mainEditController implements Initializable {
         init();
         // ((mapObj)board).resize(xVal.getText(), yVal.getText(), scaleFactor.getText());
     }
-@FXML public void setLineBtn(){
+
+    @FXML public void setLineBtn(){
         this.Mode = 2;
-}
-@FXML public void setTextBtn(){
+    }
+
+    @FXML public void setTextBtn(){
         this.Mode = 0;
-}
-@FXML public void setNoteBtn(){
+    }
+
+    @FXML public void setNoteBtn(){
         this.Mode = 1;
-}
-@FXML public void setErase(){
+    }
+
+    @FXML public void setErase(){
         this.Mode = 3;
-}
+    }
 
     private void lineOptions(){
         ContextMenu menu = new ContextMenu();
@@ -218,29 +372,29 @@ public class mainEditController implements Initializable {
         gc.setLineWidth(Double.parseDouble(ptsize.getText()));
         menuItem.getItems().add(input);
 
-    Menu parentMenu = new Menu("Shape");
+        Menu parentMenu = new Menu("Shape");
 
-    RadioMenuItem butt = new RadioMenuItem("butt");
-    butt.setOnAction(event -> gc.setLineCap(StrokeLineCap.BUTT));
-    RadioMenuItem sqr = new RadioMenuItem("square");
-    sqr.setOnAction(event -> gc.setLineCap(StrokeLineCap.SQUARE));
-    RadioMenuItem round = new RadioMenuItem("round");
-    round.setOnAction(event -> gc.setLineCap(StrokeLineCap.ROUND));
-    ToggleGroup group = new ToggleGroup();
+        RadioMenuItem butt = new RadioMenuItem("butt");
+        butt.setOnAction(event -> gc.setLineCap(StrokeLineCap.BUTT));
+        RadioMenuItem sqr = new RadioMenuItem("square");
+        sqr.setOnAction(event -> gc.setLineCap(StrokeLineCap.SQUARE));
+        RadioMenuItem round = new RadioMenuItem("round");
+        round.setOnAction(event -> gc.setLineCap(StrokeLineCap.ROUND));
+        ToggleGroup group = new ToggleGroup();
 
-    butt.setToggleGroup(group);
-    sqr.setToggleGroup(group);
-    round.setToggleGroup(group);
+        butt.setToggleGroup(group);
+        sqr.setToggleGroup(group);
+        round.setToggleGroup(group);
 
-    // Add MenuItem to ContextMenu
-    menu.getItems().addAll(menuItem, parentMenu);
+        // Add MenuItem to ContextMenu
+        menu.getItems().addAll(menuItem, parentMenu);
 
-    LineBtn.setContextMenu(menu);
+        LineBtn.setContextMenu(menu);
         EraseBtn.setContextMenu(menu);
-}
+    }
 
     public void drawText(MouseEvent event) {
-        board.requestFocus();
+        //board.requestFocus();
         if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
             if (this.Mode == 0) {
                 TextInputDialog dialog = new TextInputDialog("Map Label");
@@ -300,32 +454,15 @@ public class mainEditController implements Initializable {
 
     private void findFiles(File dir, TreeItem<File> parent){
         TreeItem<File> root = new TreeItem<>(dir);
-        root.setGraphic(rootIcon);
-        if (root.toString().contains("Script")) {
-            root.setGraphic(scriptIcon);
-        }
-        else if (root.toString().contains("Characters")) {
-            root.setGraphic(npcIcon);
-        }
-        else {
-            root.setGraphic(rootIcon);
-        }
-        try {
             File[] files = dir.listFiles();
             for (File file : files) {
                 if (file.isDirectory()) {
-                    System.out.println("directory:" + file.getCanonicalPath());
-                    root.setGraphic(rootIcon);
-                    if (root.toString().contains("Script")) {
-                        root.setGraphic(scriptIcon);
-                    }
-                    else if (root.toString().contains("Characters")) {
-                        root.setGraphic(npcIcon);
-                    }
+                    //System.out.println("directory:" + file.getCanonicalPath());
+
                     findFiles(file, root);
                 } else {
-                    System.out.println("     file:" + file.getCanonicalPath());
-                    root.getChildren().add(new TreeItem<>(file, leafIcon));
+                    //System.out.println("     file:" + file.getCanonicalPath());
+                    root.getChildren().add(new TreeItem<File>(file));
                 }
             }
             if (parent == null) {
@@ -333,16 +470,35 @@ public class mainEditController implements Initializable {
             } else {
                 parent.getChildren().add(root);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @FXML public void clearAll(){
         gc.clearRect(0, 0, width, height);
+        init();
     }
 
     @FXML public void saveMap(){
+        FileChooser chooser = new FileChooser();
+        File directory = new File("resourceDirs/Maps");
+        chooser.setInitialDirectory(directory);
+
+        File map = chooser.showSaveDialog(board.getScene().getWindow());
+
+        try {
+            //System.out.println(directory.getCanonicalPath());
+            WritableImage writableImage = new WritableImage((int) board.getWidth(), (int) board.getHeight());
+            SnapshotParameters sp = new SnapshotParameters();
+            sp.setFill(Color.TRANSPARENT);
+            board.snapshot(sp, writableImage);
+            RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
+            ImageIO.write(renderedImage, ".png", map);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        findFiles(ResourceLibrary.getRoot().getValue(), null);
+
+        ResourceLibrary.refresh();
 
     }
 
@@ -374,22 +530,13 @@ public class mainEditController implements Initializable {
             stage.setScene(this.scene);
             stage.setMinWidth(800);
             stage.setMinHeight(300);
-             ResizeHelper.addResizeListener(stage);
+            ResizeHelper.addResizeListener(stage);
             stage.centerOnScreen();
         });
     }
 
     @FXML public void EditTheme(ActionEvent actionEvent) {
     }
-
-    @FXML public void loadMapEditor(ActionEvent actionEvent) {
-       // mainSpace.setRoot(mapEditor);
-    }
-
-    @FXML public void loadNPCeditor(ActionEvent actionEvent) {
-        //mainSpace.setRoot(npcEditor);
-    }
-
 
     /* Terminates Application */
     public void closeSystem(){
@@ -399,71 +546,4 @@ public class mainEditController implements Initializable {
 
     public void minimizeWindow(){ MainLaunch.getPrimaryStage().setIconified(true);
     }
-
-    /*private final class TextFieldTreeCellImpl extends TreeCell<String> {
-
-        private TextField textField;
-
-        public TextFieldTreeCellImpl() {
-        }
-
-        @Override
-        public void startEdit() {
-            super.startEdit();
-
-            if (textField == null) {
-                createTextField();
-            }
-            setText(null);
-            setGraphic(textField);
-            textField.selectAll();
-        }
-
-        @Override
-        public void cancelEdit() {
-            super.cancelEdit();
-            setText((String) getItem());
-            setGraphic(getTreeItem().getGraphic());
-        }
-
-        @Override
-        public void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-
-            if (empty) {
-                setText(null);
-                setGraphic(null);
-            } else {
-                if (isEditing()) {
-                    if (textField != null) {
-                        textField.setText(getString());
-                    }
-                    setText(null);
-                    setGraphic(textField);
-                } else {
-                    setText(getString());
-                    setGraphic(getTreeItem().getGraphic());
-                }
-            }
-        }
-
-        private void createTextField() {
-            textField = new TextField(getString());
-            textField.setOnKeyReleased(new EventHandler<KeyEvent>() {
-
-                @Override
-                public void handle(KeyEvent t) {
-                    if (t.getCode() == KeyCode.ENTER) {
-                        commitEdit(textField.getText());
-                    } else if (t.getCode() == KeyCode.ESCAPE) {
-                        cancelEdit();
-                    }
-                }
-            });
-        }
-
-        private String getString() {
-            return getItem() == null ? "" : getItem().toString();
-        }
-    }*/
 }

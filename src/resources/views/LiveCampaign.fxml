@@ -24,7 +24,11 @@
     <center>
         <Pane fx:id="mapWindow">
          <children>
-            <ImageView fitHeight="720.0" fitWidth="344.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="mapView" fitHeight="720.0" fitWidth="344.0" pickOnBounds="true" preserveRatio="true" >
+             <image>
+                <Image url=""/>
+             </image>
+            </ImageView>
          </children></Pane>
     </center>
     <left>

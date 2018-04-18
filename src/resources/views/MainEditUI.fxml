@@ -46,7 +46,7 @@
     <center>
       <ScrollPane>
          <content>
-                <Canvas id="drawingBoard" fx:id="board" cache="true" focusTraversable="true" height="650.0" onMouseClicked="#drawText" onMouseDragged="#drawLine" onMousePressed="#drawLine" onMouseReleased="#drawLine" width="1014.0" />
+                <Canvas id="drawingBoard" fx:id="board" cache="true" focusTraversable="true" width="1014.0" height="650.0" onMouseClicked="#drawText" onMouseDragged="#drawLine" onMousePressed="#drawLine" onMouseReleased="#drawLine" />
          </content>
       </ScrollPane>
     </center>
@@ -76,7 +76,7 @@
                 <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="1.0" />
                 <Button fx:id="LineBtn" mnemonicParsing="false" onAction="#setLineBtn" text="Lines" />
                 <Button fx:id="EraseBtn" mnemonicParsing="false" onAction="#setErase" text="Erase" />
-                <Button fx:id="imgBtn" mnemonicParsing="false" text="Images" />
+                <Button fx:id="imgBtn" mnemonicParsing="false" text="Images" onAction="#loadImage"/>
                 <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
                 <TextField fx:id="scaleFactor" onAction="#changeScale" prefHeight="27.0" prefWidth="81.0" promptText="Grid Size" text="30" />
                 <TextField onAction="#changeWidth" prefHeight="27.0" prefWidth="89.0" promptText="Map Width" text="1014" fx:id="xVal" />
