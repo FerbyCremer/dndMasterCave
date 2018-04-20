@@ -11,7 +11,7 @@ import javafx.scene.image.ImageView;
 import java.io.File;
 import java.io.IOException;
 
-public class fileDirs extends TreeView {
+public class fileDirs extends mainEditController {
     private final Node rootIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/folder_1.png")));
     private final Node leafIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/file_1.png")));
 

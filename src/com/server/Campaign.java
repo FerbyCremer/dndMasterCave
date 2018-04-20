@@ -1,9 +1,7 @@
 package com.server;
 
-import com.assets.mapObj;
 import javafx.scene.image.Image;
 
-import java.io.File;
 import java.io.Serializable;
 
 public class Campaign implements Serializable{

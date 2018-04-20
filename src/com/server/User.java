@@ -1,6 +1,6 @@
 package com.server;
 
-import com.assets.mapObj;
+import javafx.scene.image.Image;
 
 import java.io.Serializable;
 
@@ -34,5 +34,5 @@ public class User implements Serializable {
 
     String picture;
     Status status;
-    mapObj mapNotes;
+    Image token;
 }

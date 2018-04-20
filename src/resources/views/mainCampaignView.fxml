@@ -23,7 +23,7 @@
    <center>
        <Pane id="maps" fx:id="mapPane">
          <children>
-            <ImageView id="campaignMap" fitHeight="720.0" fitWidth="775.0" pickOnBounds="true" preserveRatio="true" styleClass=".campaignMap">
+            <ImageView fx:id="imageView" id="campaignMap" fitHeight="720.0" fitWidth="775.0" pickOnBounds="true" preserveRatio="true" styleClass=".campaignMap">
                <image>
                </image>
             </ImageView>

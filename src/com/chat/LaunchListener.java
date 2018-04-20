@@ -56,7 +56,7 @@ public class LaunchListener implements Runnable{
             is = socket.getInputStream();
             input = new ObjectInputStream(is);
         } catch (IOException e) {
-            LoginController.getInstance().showErrorDialog("Could not connect to server");
+            LoginController.getInstance().showErrorDialog("Could not connect to com.server");
             logger.error("Could not Connect");
         }
         logger.info("Connection accepted " + socket.getInetAddress() + ":" + socket.getPort());

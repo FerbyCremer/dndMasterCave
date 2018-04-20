@@ -1,4 +1,4 @@
 package com.assets;
 
-public class assetBuildController {
+public class assetBuildController extends mainEditController {
 }

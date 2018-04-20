@@ -20,16 +20,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="com.user.campaignController">
+<BorderPane fx:id="borderPane" prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.user.campaignController">
     <center>
-        <Pane fx:id="mapWindow">
-         <children>
-            <ImageView fx:id="mapView" fitHeight="720.0" fitWidth="344.0" pickOnBounds="true" preserveRatio="true" >
-             <image>
-                <Image url=""/>
-             </image>
-            </ImageView>
-         </children></Pane>
+        <ScrollPane fx:id="mapWindow" scaleShape="true">
+            <ImageView fx:id="mapView" pickOnBounds="true" preserveRatio="true" />
+        </ScrollPane>
     </center>
     <left>
         <BorderPane prefHeight="720.0" prefWidth="156.0">

@@ -223,7 +223,7 @@ public class chatController implements Initializable {
             System.exit(0);
         }
 
-        /* Method to display server messages */
+        /* Method to display com.server messages */
         public synchronized void addAsServer(Message msg) {
             Task<HBox> task = new Task<HBox>() {
                 @Override

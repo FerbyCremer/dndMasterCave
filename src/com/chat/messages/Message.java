@@ -1,5 +1,10 @@
 package com.chat.messages;
 
+import javafx.scene.image.Image;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +17,7 @@ public class Message implements Serializable {
     private int count;
     private ArrayList<User> list;
     private ArrayList<User> users;
+    private Image map;
 
     private Status status;
 
@@ -42,6 +48,8 @@ public class Message implements Serializable {
 
         return msg;
     }
+
+    public Image getMap() { return map;}
 
     public void setMsg(String msg) {
         this.msg = msg;
@@ -75,6 +83,15 @@ public class Message implements Serializable {
         this.picture = picture;
     }
 
+    public void setMap(File map) {
+        try {
+        FileInputStream fis = new FileInputStream(map);
+        Image image = new Image(fis);
+        this.map = image;
+    } catch (FileNotFoundException e){
+        e.printStackTrace();
+    }
+    }
 
     public ArrayList<User> getUsers() {
         return users;

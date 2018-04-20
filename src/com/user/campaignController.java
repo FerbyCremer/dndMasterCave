@@ -33,20 +33,25 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javafx.beans.value.ChangeListener;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -63,6 +68,7 @@ public class campaignController implements Initializable{
     @FXML BorderPane borderPane;
     @FXML ComboBox statusComboBox;
     @FXML ImageView microphoneImageView;
+    @FXML ImageView mapView;
 
     @FXML TreeView<File> ResourceLibrary;
 
@@ -80,8 +86,12 @@ public class campaignController implements Initializable{
     }
 
     public void selectMap() throws IOException {
-        File world = ResourceLibrary.getRoot().getValue();
-        Listener.sendImg(world);
+        File world = ResourceLibrary.getSelectionModel().getSelectedItem().getValue();
+
+            FileInputStream fis = new FileInputStream(world);
+            Image image = new Image(fis);
+        mapView.setImage(image);
+       // Listener.run();
     }
 
     private void findFiles(File dir, TreeItem<File> parent){
@@ -263,7 +273,7 @@ public class campaignController implements Initializable{
         System.exit(0);
     }
 
-    /* Method to display server messages */
+    /* Method to display com.server messages */
     public synchronized void addAsServer(Message msg) {
         Task<HBox> task = new Task<HBox>() {
             @Override
@@ -293,6 +303,30 @@ public class campaignController implements Initializable{
 
         File currentDir = new File("resourceDirs/Maps");
         findFiles(currentDir,null);
+        ResourceLibrary.setCellFactory(new Callback<>() {
+
+            public TreeCell<File> call(TreeView<File> tv) {
+                return new TreeCell<>() {
+
+                    @Override
+                    protected void updateItem(File item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty == false){
+                            setText(item.getName());
+                            if (item.isDirectory())
+                                setGraphic(rootIcon);
+                             else
+                                setGraphic(leafIcon);
+                        }
+                        else {
+                            setText("");
+                            setGraphic(null);
+                        }
+                    }
+                };
+            }
+        });
 
         try {
             setImageLabel();

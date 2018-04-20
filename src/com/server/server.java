@@ -1,6 +1,5 @@
 package com.server;
 
-import com.assets.mapObj;
 import javafx.scene.image.Image;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,7 @@ public class server {
         static Logger logger = LoggerFactory.getLogger(server.class);
 
         public static void main(String[] args) throws Exception {
-            logger.info("The chat server is running.");
+            logger.info("The chat com.server is running.");
             ServerSocket listener = new ServerSocket(PORT);
 
             try {
@@ -100,12 +99,12 @@ public class server {
                 }
             }
 //TODO change message to Image and work out the logic?
-            private void changeMap(Message inputmsg) throws IOException{
-                for (ObjectOutputStream writer : writers) {
-
-                    writer.writeObject(inputmsg);
-                    writer.reset();
-                }
+            private Message changeMap(Message inputmsg) throws IOException{
+                Message msg = new Message();
+                msg.setWorld(inputmsg.getMap());
+                msg.setType(MessageType.IMG);
+                write(msg);
+                return msg;
             }
 
             private Message changeStatus(Message inputmsg) throws IOException {
@@ -163,11 +162,11 @@ public class server {
             }
 
             /*
-             * For displaying that a user has joined the server
+             * For displaying that a user has joined the com.server
              */
             private Message addToList() throws IOException {
                 Message msg = new Message();
-                msg.setMsg("Welcome, You have now joined the server! Enjoy chatting!");
+                msg.setMsg("Welcome, You have now joined the com.server! Enjoy chatting!");
                 msg.setType(MessageType.CONNECTED);
                 msg.setName("SERVER");
                 write(msg);

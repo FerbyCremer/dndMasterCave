@@ -248,7 +248,7 @@ public class LoginController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning!");
             alert.setHeaderText(message);
-            alert.setContentText("Please check for firewall issues and check if the server is running.");
+            alert.setContentText("Please check for firewall issues and check if the com.server is running.");
             alert.showAndWait();
         });
 

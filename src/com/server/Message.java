@@ -1,5 +1,7 @@
 package com.server;
 
+import javafx.scene.image.Image;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +14,7 @@ public class Message implements Serializable {
     private int count;
     private ArrayList<User> list;
     private ArrayList<User> users;
-
+    private Image world;
     private Status status;
     private byte[] voiceMsg;
 
@@ -49,6 +51,10 @@ public class Message implements Serializable {
     public MessageType getType() {
         return type;
     }
+
+    public Image getMap() { return world; }
+
+    public void setWorld( Image map ) { this.world = map; }
 
     public void setType(MessageType type) {
         this.type = type;

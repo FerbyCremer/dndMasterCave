@@ -24,8 +24,9 @@ public class Listener implements Runnable{
     public String hostname;
     public int port;
     public static String username;
+    private static File world = new File("test.png");
     //public chatController controller;
-    public campaignController controller;
+    //public campaignController controller;
     public playController pcontroller;
     public mainEditController mcontroller;
     private static ObjectOutputStream oos;
@@ -39,6 +40,7 @@ public class Listener implements Runnable{
 
     Logger logger = LoggerFactory.getLogger(Listener.class);
 
+/*
     public Listener(String hostname, int port, String username, String picture, campaignController controller) {
         this.hostname = hostname;
         this.port = port;
@@ -47,6 +49,7 @@ public class Listener implements Runnable{
         this.controller = controller;
         instance = this;
     }
+*/
 
     public Listener(String hostname, int port, String username, String picture, playController controller) {
         this.hostname = hostname;
@@ -57,21 +60,13 @@ public class Listener implements Runnable{
         instance = this;
     }
 
-    public Listener(String hostname, int port, String username, String picture, mainEditController controller) {
+/*    public Listener(String hostname, int port, String username, String picture, mainEditController controller) {
         this.hostname = hostname;
         this.port = port;
         Listener.username = username;
         Listener.picture = picture;
         this.mcontroller = controller;
         instance = this;
-    }
-
-    /*public Listener(String hostname, int port, String username, String picture, chatController controller) {
-        this.hostname = hostname;
-        this.port = port;
-        Listener.username = username;
-        Listener.picture = picture;
-        this.controller = controller;
     }*/
 
     public void run() {
@@ -83,12 +78,13 @@ public class Listener implements Runnable{
             is = socket.getInputStream();
             input = new ObjectInputStream(is);
         } catch (IOException e) {
-            LoginController.getInstance().showErrorDialog("Could not connect to server");
+            LoginController.getInstance().showErrorDialog("Could not connect to com.server");
             logger.error("Could not Connect");
         }
         logger.info("Connection accepted " + socket.getInetAddress() + ":" + socket.getPort());
 
         try {
+            try{
             connect();
             logger.info("Sockets in and out ready!");
             while (socket.isConnected()) {
@@ -99,32 +95,38 @@ public class Listener implements Runnable{
                     logger.debug("Message recieved:" + message.getMsg() + " MessageType:" + message.getType() + "Name:" + message.getName());
                     switch (message.getType()) {
                         case USER:
-                            controller.addToChat(message);
+                            pcontroller.addToChat(message);
                             break;
                         case VOICE:
-                            controller.addToChat(message);
+                            pcontroller.addToChat(message);
                             break;
                         case NOTIFICATION:
-                            controller.newUserNotification(message);
+                            pcontroller.newUserNotification(message);
                             break;
                         case SERVER:
-                            controller.addAsServer(message);
+                            pcontroller.addAsServer(message);
                             break;
                         case CONNECTED:
-                            controller.setUserList(message);
+                            pcontroller.setUserList(message);
                             break;
                         case DISCONNECTED:
-                            controller.setUserList(message);
+                            pcontroller.setUserList(message);
                             break;
                         case STATUS:
-                            controller.setUserList(message);
+                            pcontroller.setUserList(message);
+                            break;
+                        case IMAGE:
+                            pcontroller.setMap(message);
                             break;
                     }
                 }
             }
+            } catch(EOFException e) {
+                e.printStackTrace();
+            }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            controller.logoutScene();
+            pcontroller.logoutScene();
         }
     }
 
@@ -138,14 +140,8 @@ public class Listener implements Runnable{
         createMessage.setStatus(Status.AWAY);
         createMessage.setMsg(msg);
         createMessage.setPicture(picture);
+        createMessage.setMap(world);
         oos.writeObject(createMessage);
-        oos.flush();
-    }
-
-    //TODO================= SENDING MAPS TO SERVER AND THEN DISTRIBUTED??? ======================
-    public static void sendImg(File map) throws IOException {
-        File world = map;
-        oos.writeObject(world);
         oos.flush();
     }
 
@@ -183,6 +179,7 @@ public class Listener implements Runnable{
         createMessage.setType(CONNECTED);
         createMessage.setMsg(HASCONNECTED);
         createMessage.setPicture(picture);
+//        createMessage.setMap(world);
         oos.writeObject(createMessage);
     }
 

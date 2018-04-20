@@ -43,13 +43,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javafx.beans.value.ChangeListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class playController implements Initializable {
-        @FXML
-        private TextArea messageBox;
+        @FXML private TextArea messageBox;
         @FXML private Label usernameLabel;
         @FXML private Label onlineCountLabel;
         @FXML private ListView userList;
@@ -57,12 +58,11 @@ public class playController implements Initializable {
         @FXML private Button recordBtn;
         @FXML ListView chatPane;
         @FXML ListView statusList;
-        @FXML
-        BorderPane borderPane;
-        @FXML
-        ComboBox statusComboBox;
+        @FXML BorderPane borderPane;
+        @FXML ComboBox statusComboBox;
         @FXML ImageView microphoneImageView;
 
+        @FXML ImageView imageView;
         @FXML TreeView<File> ResourceLibrary;
 
         //Image microphoneActiveImage = new Image(getClass().getClassLoader().getResource("images/microphone-active.png").toString());
@@ -70,16 +70,20 @@ public class playController implements Initializable {
 
         private double xOffset;
         private double yOffset;
-        Logger logger = LoggerFactory.getLogger(com.user.campaignController.class);
+        Logger logger = LoggerFactory.getLogger(playController.class);
 
-        @FXML public void loadNewMap(ActionEvent actionEvent) throws IOException {
-            selectMap();
-        }
+    @FXML public void loadNewMap(ActionEvent actionEvent) throws IOException {
+        selectMap();
+    }
 
-        public void selectMap() throws IOException {
-            File world = ResourceLibrary.getRoot().getValue();
-            Listener.sendImg(world);
-        }
+    public void selectMap() throws IOException {
+        File world = ResourceLibrary.getSelectionModel().getSelectedItem().getValue();
+
+        FileInputStream fis = new FileInputStream(world);
+        Image image = new Image(fis);
+        imageView.setImage(image);
+        // Listener.run();
+    }
 
         public void sendButtonAction() throws IOException {
             String msg = messageBox.getText();
@@ -235,7 +239,7 @@ public class playController implements Initializable {
             System.exit(0);
         }
 
-        /* Method to display server messages */
+        /* Method to display com.server messages */
         public synchronized void addAsServer(Message msg) {
             Task<HBox> task = new Task<HBox>() {
                 @Override
@@ -303,8 +307,12 @@ public class playController implements Initializable {
 
         }
 
+        public void setMap(Message map){
+            map.getMap();
+        }
+
         public void setImageLabel(String selectedPicture) {
-           /* switch (selectedPicture) {
+           switch (selectedPicture) {
                 case "Dominic":
                     this.userImageView.setImage(new Image(getClass().getClassLoader().getResource("images/Dominic.png").toString()));
                     break;
@@ -314,7 +322,7 @@ public class playController implements Initializable {
                 case "Default":
                     this.userImageView.setImage(new Image(getClass().getClassLoader().getResource("images/default.png").toString()));
                     break;
-            }*/
+            }
         }
 
         public void logoutScene() {

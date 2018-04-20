@@ -1,12 +1,15 @@
 package com.assets;
 
 import com.chat.LaunchListener;
+import com.chat.Listener;
 import com.chat.util.ResizeHelper;
 import com.user.MainLaunch;
 import com.user.campaignController;
+import com.user.playController;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
+import javafx.css.converter.FontConverter;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -75,6 +78,9 @@ public class mainEditController implements Initializable {
     @FXML Button EraseBtn;
     @FXML ColorPicker paint;
 
+    @FXML ToggleButton bold;
+    @FXML ToggleButton italic;
+
     public int scale;
     public int width;
     public int height;
@@ -92,7 +98,7 @@ public class mainEditController implements Initializable {
     public String avatar;
     private Scene scene;
 
-    Font font = new Font(12);
+    Font font = new Font("Garamond", 12);
 
     private static mainEditController instance;
 
@@ -179,11 +185,9 @@ public class mainEditController implements Initializable {
     }
 
     public void init(){
-        //gc = getGraphicsContext2D();
 
         hLineCount = (int) Math.floor((height + 1) / scale);
         vLineCount = (int) Math.floor((width + 1) / scale);
-        //grid = board.getGraphicsContext2D();
 
         grid.setFill(Color.WHITE);
         grid.fillRect(0,0, width, height);
@@ -200,18 +204,30 @@ public class mainEditController implements Initializable {
     }
 
     @FXML public void setBold(){
-        gc.setFont(Font.font(font.getFamily(), FontWeight.BOLD, font.getSize()));
-        font.equals(gc.getFont());
+        if (bold.isSelected()) {
+            gc.setFont(Font.font(font.getName(), FontWeight.BOLD, font.getSize()));
+            font = gc.getFont();
+        }
+        else {
+            gc.setFont(Font.font(font.getName(), FontWeight.NORMAL, font.getSize()));
+            font = gc.getFont();
+        }
     }
     @FXML public void setItalic(){
-        gc.setFont(Font.font(font.getFamily(), FontPosture.ITALIC, font.getSize()));
-        font.equals(gc.getFont());
+        if (italic.isSelected()) {
+            gc.setFont(Font.font(font.getName(), FontPosture.ITALIC, font.getSize()));
+            font = gc.getFont();
+        }
+        else {
+            gc.setFont(Font.font(font.getName(), FontPosture.REGULAR, font.getSize()));
+            font = gc.getFont();
+        }
     }
     @FXML public void setFontSize(){
         fontSize.setOnKeyTyped(event ->  {
-            gc.setFont(Font.font(font.getFamily(), Integer.parseInt(fontSize.getText())));
+            gc.setFont(Font.font(font.getName(), Integer.parseInt(fontSize.getText())));
             System.out.println("enter");
-            font.equals(gc.getFont());
+            font = gc.getFont();
         });
     }
 
@@ -224,14 +240,12 @@ public class mainEditController implements Initializable {
         Dragboard dragboard = ResourceLibrary.startDragAndDrop(TransferMode.ANY);
         Image image;
         try {
-            //List<File> phil = dragboard.getFiles();
             FileInputStream fis = new FileInputStream(sourceText);
             image = new Image(fis);
         } catch (FileNotFoundException e){
             event.consume();
             return;
         }
-
 
         // Add the source text to the Dragboard
         ClipboardContent content = new ClipboardContent();
@@ -280,9 +294,7 @@ public class mainEditController implements Initializable {
         TransferMode modeUsed = event.getTransferMode();
 
         if (modeUsed == TransferMode.MOVE)
-        {
-            //ResourceLibrary.setText("");
-        }
+        { }
 
         event.consume();
     }
@@ -385,6 +397,10 @@ public class mainEditController implements Initializable {
         butt.setToggleGroup(group);
         sqr.setToggleGroup(group);
         round.setToggleGroup(group);
+
+        parentMenu.getItems().add(butt);
+        parentMenu.getItems().add(sqr);
+        parentMenu.getItems().add(round);
 
         // Add MenuItem to ContextMenu
         menu.getItems().addAll(menuItem, parentMenu);
@@ -492,7 +508,7 @@ public class mainEditController implements Initializable {
             sp.setFill(Color.TRANSPARENT);
             board.snapshot(sp, writableImage);
             RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
-            ImageIO.write(renderedImage, ".png", map);
+            ImageIO.write(renderedImage, "PNG", map);
         } catch (IOException e){
             e.printStackTrace();
         }

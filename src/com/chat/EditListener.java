@@ -68,7 +68,7 @@ public class EditListener implements Runnable{
             is = socket.getInputStream();
             input = new ObjectInputStream(is);*/
         } catch (IOException e) {
-           /* mainEditController.getInstance().showErrorDialog("Could not connect to server");
+           /* mainEditController.getInstance().showErrorDialog("Could not connect to com.server");
             logger.error("Could not Connect");*/
         }
 //        logger.info("Connection accepted " + socket.getInetAddress() + ":" + socket.getPort());

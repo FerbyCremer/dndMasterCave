@@ -17,6 +17,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ToggleButton?>
 <BorderPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="com.assets.mainEditController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
@@ -30,8 +31,8 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Editor">
                     <items>
-                        <MenuItem fx:id="mapScene" mnemonicParsing="false" onAction="#loadMapEditor" text="Map Editor" />
-                        <MenuItem fx:id="npcScene" mnemonicParsing="false" onAction="#loadNPCeditor" text="NPC/Monster Editor" />
+                        <MenuItem fx:id="mapScene" mnemonicParsing="false" text="Map Editor" />
+                        <MenuItem fx:id="npcScene" mnemonicParsing="false" text="NPC/Monster Editor" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Aesthetics">
@@ -62,16 +63,16 @@
                 <Button id="text" fx:id="TextBtn" mnemonicParsing="false" onAction="#setTextBtn" text="Text" />
                 <TextField id="fontSize" fx:id="fontSize" onAction="#setFontSize" prefHeight="27.0" prefWidth="81.0" promptText="font size" text="12" />
                 <ChoiceBox id="FontPicker" prefWidth="150.0" />
-                <Button id="bold" fx:id="bold" mnemonicParsing="false" text="B" onAction="#setBold">
+                <ToggleButton id="bold" fx:id="bold" mnemonicParsing="false" text="B" onAction="#setBold">
                     <font>
                         <Font name="Georgia Bold" size="13.0" />
                     </font>
-                </Button>
-                <Button id="Italic" fx:id="italic" mnemonicParsing="false" text="I" onAction="#setItalic">
+                </ToggleButton>
+                <ToggleButton id="italic" fx:id="italic" mnemonicParsing="false" text="I" onAction="#setItalic">
                     <font>
                         <Font name="Georgia Italic" size="13.0" />
                     </font>
-                </Button>
+                </ToggleButton>
                 <ColorPicker id="colorPicker" fx:id="paint" onAction="#setPaint" />
                 <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="1.0" />
                 <Button fx:id="LineBtn" mnemonicParsing="false" onAction="#setLineBtn" text="Lines" />
